@@ -2,6 +2,8 @@ const gulp = require('gulp');
 
 const rollup = require('rollup-stream');
 const rollupNode = require('rollup-plugin-node-resolve');
+const rollupBuiltins = require('rollup-plugin-node-builtins');
+const rollupCommonjs = require('rollup-plugin-commonjs');
 
 const setSource = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
@@ -18,7 +20,11 @@ function buildJS() {
     cache,
     sourcemap: true,
     plugins: [
-      rollupNode()
+      rollupNode(),
+      rollupBuiltins(),
+      rollupCommonjs({
+        include: 'node_modules/victor/**'
+      }),
     ]
   })
     .on('bundle', bundle => cache = bundle)
