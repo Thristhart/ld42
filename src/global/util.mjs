@@ -6,5 +6,10 @@ class Util {
     }
     return value;
   }
+  static getMinimumAngleDifference(angle1, angle2) {
+    let diff = Math.abs(angle1 - angle2);
+
+    return Math.PI - Math.abs(diff - Math.PI);
+  }
 }
 export default Util;

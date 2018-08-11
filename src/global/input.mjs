@@ -1,5 +1,6 @@
 import EventEmitter from "events";
 import Vector from "victor";
+import CONSTANTS from "./constants.mjs";
 
 class Input {
   static attach(canvas) {
@@ -10,13 +11,17 @@ class Input {
       down: false,
     };
 
+
     Input.vector = new Vector();
+    Input.mouse = new Vector();
 
     Input.events = new EventEmitter();
     Input.canvas = canvas;
     
     canvas.addEventListener("keydown", Input.onKeydown);
     canvas.addEventListener("keyup", Input.onKeyup);
+    canvas.addEventListener("mousemove", Input.onMouseMove);
+    canvas.addEventListener("mousedown", Input.onClick);
 
     Input.events.on("leftStart", () => {
       Input.keys.left = true;
@@ -81,6 +86,18 @@ class Input {
     if(event.code === "KeyS" || event.code === "ArrowDown") {
       Input.events.emit("downEnd");
     }
+  }
+
+  static onMouseMove(event) {
+    let rect = Input.canvas.getBoundingClientRect();
+    let x = event.clientX - rect.left;
+    let y = event.clientY - rect.top;
+    Input.mouse.x = x / rect.width * CONSTANTS.WIDTH;
+    Input.mouse.y = y / rect.height * CONSTANTS.HEIGHT;
+    Input.events.emit("mousemove");
+  }
+  static onClick(event) {
+    Input.events.emit("click");
   }
 
   static calculateInputVector() {

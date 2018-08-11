@@ -2,7 +2,7 @@ import Vector from "victor";
 
 class Entity {
   constructor(x, y) {
-    this.position = new Vector();
+    this.position = new Vector(x, y);
     this.behaviors = [];
     
     this.behaviors.forEach(behavior => {

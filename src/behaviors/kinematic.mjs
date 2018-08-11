@@ -13,7 +13,6 @@ export default class Kinematic {
     entity.position.x += entity.velocity.x * dt;
     entity.position.y += entity.velocity.y * dt;
 
-    entity.velocity.x = Util.clamp(entity.velocity.x, entity.maxSpeed);
-    entity.velocity.y = Util.clamp(entity.velocity.y, entity.maxSpeed);
+    entity.velocity.limit(entity.maxSpeed, 0.75);
   }
 }
