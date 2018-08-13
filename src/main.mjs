@@ -56,8 +56,8 @@ class MeadowLevel extends Level {
     this.duration = 60500;
     this.timeSinceLastBird = 0;
     this.timeSinceLastCharger = 0;
-    this.timePerBird = 4500;
-    this.timePerCharger = 9500;
+    this.timePerBird = 3500;
+    this.timePerCharger = 8000;
   }
   setup() {
     this.started = false;
@@ -535,15 +535,55 @@ class AstralLevel extends Level {
         },
       }));
     });
+    function addSage(sageCount) {
+      let lifetime = 0;
+      let sages = entities.filter(e => e instanceof Sage);
+      if(sages.length > 0) {
+        lifetime = sages[0].lifetime;
+      }
+      if(!sageCount) {
+        sageCount = sages.length + 1;
+      }
+      let angle = Math.PI * 2 * lifetime / 12000;
+      angle = angle % (Math.PI * 2);
+      angle += ((Math.PI * 2) / (sageCount)) * sages.length;
+      let x = CONSTANTS.WIDTH / 2 + Math.cos(angle) * CONSTANTS.WIDTH * 0.8;
+      let y = CONSTANTS.HEIGHT / 2 + Math.sin(angle) * CONSTANTS.WIDTH * 0.8;
+      let sage = new Sage(x, y);
+      sage.lifetime = lifetime;
+      entities.push(sage);
+    }
     this.timeline.addPoint(3500, () => {
-      let sage = new Sage(200, 50);
-      entities.push(sage);
-      sage = new Sage(200, 50);
-      entities.push(sage);
-      sage = new Sage(200, 50);
-      entities.push(sage);
-      sage = new Sage(200, 50);
-      entities.push(sage);
+      addSage(3);
+      addSage(3);
+      addSage(3);
+    });
+    this.timeline.thenWait(5000, () => {
+      addSage()
+    });
+    this.timeline.thenWait(5000, () => {
+      addSage()
+    });
+    this.timeline.thenWait(5000, () => {
+      addSage()
+    });
+    this.timeline.thenWait(5000, () => {
+      addSage()
+    });
+    this.timeline.thenWait(5000, () => {
+      addSage()
+    });
+    this.timeline.thenWait(5000, () => {
+      addSage()
+    });
+    this.timeline.thenWait(5000, () => {
+      addSage()
+    });
+    this.timeline.thenWait(5000, () => {
+      addSage()
+    });
+    this.timeline.thenWait(5000, () => {
+      addSage()
     });
   }
   setup() {
@@ -587,8 +627,8 @@ class VictoryLevel extends Level {
     this.music = new Howl({
       src: "./assets/Main_Theme.mp3"
     });
-    this.duration = 56000;
-    this.circleColor = "#bc203f";
+    this.duration = 56000000;
+    this.circleColor = "transparent";
   }
   setup() {
     this.started = false;
@@ -606,6 +646,8 @@ class VictoryLevel extends Level {
         UI.dialog.text.innerHTML = `Well it wasn't exactly a test. More like an eternal struggle for like good and evil or whatever, but good job anyways! Those whack sages are stuck in that floaty dimension now. Thanks for like freeing me and stuff, my dude. I'm gonna like go now. Got some partying to do, so like take it easy. Here's a dope ass turtle as a reward!`;
         
         Input.events.once("click", () => {
+          entities.splice(entities.indexOf(skull));
+          entities.push(new Turtle(CONSTANTS.WIDTH / 2, CONSTANTS.HEIGHT / 2 - 80));
           UI.dialog.className = "turtle";
           UI.dialog.text.innerHTML = `IT'S A RAD TURTLE!!!`;
           
@@ -623,7 +665,7 @@ class VictoryLevel extends Level {
   }
 }
 
-state.currentLevel = new AstralLevel();
+state.currentLevel = new MeadowLevel();
 
 state.nextLevels = [new DungeonLevel(), new AstralLevel(), new VictoryLevel()];
 
@@ -647,6 +689,12 @@ function draw() {
   if(state.dying) {
     Renderer.context.fillStyle = `rgba(0, 0, 0, ${1 - state.slowmoSeconds / 2000})`;
     Renderer.context.fillRect(0, 0, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
+  }
+
+  if(state.currentLevel instanceof VictoryLevel && state.currentLevel.loaded) {
+    Renderer.context.font = "42px 'Inexpugnable', serif";
+    Renderer.context.fillStyle = "yellow";
+    Renderer.context.fillText("Thanks for playing!", 350, 150);
   }
 
   Renderer.endDraw();
@@ -684,13 +732,16 @@ function drawMagicCircle(radius) {
   ctx.closePath();
   ctx.stroke();
 
-  ctx.fillStyle = "rgba(53, 64, 72, 0.8)";
-  ctx.filter = "blur(1px)";
-  ctx.beginPath();
-  ctx.arc(0, 0, 9 - (1 - Math.sin(state.time / 1000)) * 3, 0, TWOPI);
-  ctx.closePath();
-  ctx.fill();
-  ctx.filter = "none";
+  if(!state.currentLevel instanceof VictoryLevel) {
+    ctx.fillStyle = "rgba(53, 64, 72, 0.8)";
+    ctx.filter = "blur(1px)";
+    ctx.beginPath();
+    ctx.arc(0, 0, 9 - (1 - Math.sin(state.time / 1000)) * 3, 0, TWOPI);
+    ctx.closePath();
+    ctx.fill();
+    ctx.filter = "none";
+  }
+
 
   ctx.rotate(-rotation);
   ctx.translate(-centerX, -centerY);
@@ -758,9 +809,9 @@ function buildMagicCircle(radius) {
   return canvas;
 }
 
-let lightningBallCooldown = 700;
+let lightningBallCooldown = 500;
 let currentLightningBallCooldown = 0;
-let wallCooldown = 5000;
+let wallCooldown = 4500;
 let currentWallCooldown = 0;
 let deathMusic = new Howl({
   src: "./assets/we_dead.mp3",
@@ -783,24 +834,34 @@ function gameloop(timestamp) {
     UI.Spells.slowmo.percentage = state.slowmoCooldown / 5000;
   }
   if(state.timescale !== 1) {
+    if(state.slowmoCooldown > 0) {
+      CONSTANTS.PLAYER_ACCEL = 0.005;
+    }
     state.slowmoSeconds -= dt;
     if(state.slowmoSeconds <= 0) {
       if(state.dying) {
         deathMusic.play();
         deathMusic.fade(0, 1, 1000);
-        switchLevelTo(state.currentLevel);
+        state.currentLevel.music.stop();
+        state.currentLevel.started = false;
+        state.currentLevel.loaded = false;
         UI.dialog.className = "sage";
         UI.dialog.text.innerHTML = `The puny apprentice is dead! Now we can use the skull to dominate all of Time and Space! AHAHAHAHAHAHAHAHAHAHAHA!`;
         Input.events.once("click", () => {
+          state.dying = false;
           deathMusic.stop();
+          switchLevelTo(state.currentLevel);
+          UI.setHP(5);
         });
         player.position.x = CONSTANTS.WIDTH / 2;
         player.position.y = CONSTANTS.HEIGHT / 2;
         player.hp = 5;
-        UI.setHP(5);
       }
       state.timescale = 1;
     }
+  }
+  else {
+    CONSTANTS.PLAYER_ACCEL = 0.003;
   }
   dt *= state.timescale;
   if(state.currentLevel.loaded && !state.levelEnding) {
@@ -851,6 +912,12 @@ function gameloop(timestamp) {
 }
 
 function switchLevelTo(level) {
+  currentLightningBallCooldown = 0;
+  state.slowmoCooldown = 0;
+  currentWallCooldown =  0;
+  UI.Spells.lightning.percentage = 0;
+  UI.Spells.wall.percentage = 0;
+  UI.Spells.slowmo.percentage = 0;
   entities.splice(0);
   entities.push(state.player);
   entities.push(skull);
@@ -938,6 +1005,7 @@ import Skull from "./entities/skull.mjs";
 import Sprite from "./global/sprites.mjs";
 import Timeline from "./global/timeline.mjs";
 import Sage from "./entities/sage.mjs";
+import Turtle from "./entities/turtle.mjs";
 
 state.player = new Player(canvas.width / 2, canvas.height / 2);
 entities.push(state.player);

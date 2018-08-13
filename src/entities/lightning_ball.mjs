@@ -47,8 +47,8 @@ class LightningBall extends Bullet {
     let vecToTarget = new Vector(targetX, targetY)
       .subtract(bullet.position)
       .normalize();
-    vecToTarget.x *= 0.3;
-    vecToTarget.y *= 0.3;
+    vecToTarget.x *= 0.4;
+    vecToTarget.y *= 0.4;
     bullet.maxSpeed = 2;
     bullet.velocity.copy(vecToTarget);
     return bullet;

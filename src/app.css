@@ -42,14 +42,15 @@ body {
 }
 #hearts {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 0.8em;
+  right: 0.8em;
   user-select: none;
+  font-size: 1.3em;
 }
 #spells {
   position: absolute;
   bottom: 0;
-  left: 0;
+  left: 16em;
   padding: 3em;
   display: flex;
 }
@@ -63,6 +64,7 @@ spell {
   position: relative;
   --percentage: 0;
   image-rendering: pixelated;
+  background: rgba(147, 141, 141, 0.7);
 }
 spell svg {
   width: 100%;
@@ -173,6 +175,16 @@ spell svg {
   background-image: url('./assets/wizard.png');
   background-size: 100em;
   background-position: -32.4em -0.3em;
+}
+#dialog.skull #portrait {
+  background-image: url('./assets/darkness.png');
+  background-size: 60em;
+  background-position: -13em -1em;
+}
+#dialog.turtle #portrait {
+  background-image: url('./assets/cool_monster.png');
+  background-size: 126em;
+  background-position: -31em -4em;
 }
 #dialog #text {
   padding: 1em;

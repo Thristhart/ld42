@@ -34,22 +34,36 @@ class Sage extends Enemy {
   update(dt) {
     super.update(dt);
     this.lifetime += dt;
-    let angle = Math.PI * 2 * this.lifetime / 8000;
+    let angle = Math.PI * 2 * this.lifetime / 12000;
     angle = angle % (Math.PI * 2);
 
     let sages = entities.filter(e => e instanceof Sage);
     sages.sort((a, b) => a.id - b.id);
 
     angle += ((Math.PI * 2) / sages.length) * sages.indexOf(this);
+    let target = new Vector();
 
-    this.position.x = CONSTANTS.WIDTH / 2 + Math.cos(angle) * state.circleSize * 1.2;
-    this.position.y = CONSTANTS.HEIGHT / 2 + Math.sin(angle) * state.circleSize * 1.2;
+    target.x = CONSTANTS.WIDTH / 2 + Math.cos(angle) * state.circleSize * 1.2;
+    target.y = CONSTANTS.HEIGHT / 2 + Math.sin(angle) * state.circleSize * 1.2;
+
+    target.subtract(this.position);
+
+    let distance = target.length();
+    target.normalize();
+    if(distance > 10) {
+      target.multiplyScalar(0.4);
+    }
+    else {
+      target.multiplyScalar(0.1);
+    }
+
+    this.velocity.copy(target);
 
     if(this.shootCooldown > 0) {
       this.shootCooldown -= dt;
     }
     if(this.shootCooldown <= 0) {
-      this.shootCooldown = 1000;
+      this.shootCooldown = 3000;
       let bullet = Bullet.shootAt(state.player, this.x, this.y);
       entities.push(bullet);
     }

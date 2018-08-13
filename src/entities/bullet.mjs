@@ -52,8 +52,8 @@ class Bullet extends Entity {
     let vecToTarget = entity.position.clone()
       .subtract(bullet.position)
       .normalize();
-    vecToTarget.x *= 0.8;
-    vecToTarget.y *= 0.8;
+    vecToTarget.x *= 0.3;
+    vecToTarget.y *= 0.3;
     bullet.maxSpeed = 2;
     bullet.velocity.copy(vecToTarget);
     return bullet;
