@@ -7,6 +7,7 @@ import Collidable from "../behaviors/collidable.mjs";
 import Renderer from "../global/renderer.mjs";
 import Player from "./player.mjs";
 import entities from "../global/entities.mjs";
+import Wall from "./wall.mjs";
 
 class Bullet extends Entity {
   constructor(x, y) {
@@ -21,13 +22,18 @@ class Bullet extends Entity {
     this.behaviors.forEach(behavior => {
       behavior.update(this, dt);
     });
-    if(entity.collidingWith.size > 0) {
+    if(this.collidingWith.size > 0) {
       for(let collider of this.collidingWith) {
         if(collider instanceof Player) {
-          console.log("pow");
-          // TODO: hurt player
-          // TODO: explode?
+          if(collider.hurt()) {
+            entities.splice(entities.indexOf(this), 1);
+            return;
+          }
+        }
+        if(collider instanceof Wall) {
           entities.splice(entities.indexOf(this), 1);
+          collider.hurt();
+          return;
         }
       }
     }

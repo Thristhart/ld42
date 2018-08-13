@@ -1,16 +1,18 @@
-- HP
-- HP display
-- Spell UI
-- Levels
- - Backgrounds
-- New spells
-  - wall
+x HP
+x HP display
+x Spell UI
+X Levels
+ X Backgrounds
+x New spells
+  x wall
+  x slowmo
   - ???
-- Bullet pattern mechanism
+x Bullet pattern mechanism
 - New enemies
   - Enemy wizard
   - ???
 - Lore
+  x dialog system?
 - Polish
  - Portal animation
  - Start screen

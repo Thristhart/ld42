@@ -9,6 +9,7 @@ class Collidable {
     entity.collidingWith = new Set();
   }
   static update(entity) {
+    entity.collidingWith.clear();
     for(let i = 0; i < entities.length; i++) {
       let ent = entities[i];
       if(ent === entity) {
@@ -26,9 +27,9 @@ class Collidable {
             continue;
           }
         }
+        entity.collidingWith.delete(ent);
+        ent.collidingWith.delete(entity);
       }
-      entity.collidingWith.delete(ent);
-      ent.collidingWith.delete(entity);
     }
   }
 }

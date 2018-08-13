@@ -4,6 +4,8 @@ import Bullet from "./bullet.mjs";
 import Sprite from "../global/sprites.mjs";
 import Vector from "victor";
 import Enemy from "./enemy.mjs";
+import Sounds from "../global/sounds.mjs";
+import Wall from "./wall.mjs";
 
 class LightningBall extends Bullet {
   constructor(x, y) {
@@ -23,9 +25,15 @@ class LightningBall extends Bullet {
     if(this.collidingWith.size > 0) {
       for(let collider of this.collidingWith) {
         if(collider instanceof Enemy) {
-          console.log("pow");
+          Sounds.LIGHTNING_HIT.play();
           entities.splice(entities.indexOf(this), 1);
-          entities.splice(entities.indexOf(collider), 1);
+          collider.hurt();
+          return;
+        }
+        if(collider instanceof Wall) {
+          entities.splice(entities.indexOf(this), 1);
+          collider.hurt();
+          return;
         }
       }
     }

@@ -1,18 +1,178 @@
+@font-face {
+  font-family: 'Inexpugnable';
+  src:  url('./assets/fonts/InexpugnableExtended.woff') format('woff');
+}
+
 body {
   margin: 0;
   padding: 0;
-}
-
-#container {
-  width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-#display {
-  background: cornflowerblue;
+
+#container {
   width: 100vmin;
   height: 100vmin;
+  position: relative;
+  overflow: hidden;
+}
+#display {
+  background: cornflowerblue;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
   image-rendering: pixelated;
+}
+
+#ui {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  z-index: 10;
+
+  user-select: none;
+}
+#hearts {
+  position: absolute;
+  top: 0;
+  right: 0;
+  user-select: none;
+}
+#spells {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 3em;
+  display: flex;
+}
+spell {
+  width: 6em;
+  height: 6em;
+  border: 1px solid black;
+  border-radius: 30%;
+  display: block;
+  overflow: hidden;
+  position: relative;
+  --percentage: 0;
+  image-rendering: pixelated;
+}
+spell svg {
+  width: 100%;
+  height: 100%;
+  stroke-dasharray: var(--percentage) 100;
+  fill: transparent;
+  stroke: black;
+  stroke-width: 32;
+}
+
+#lightning .controlicon {
+  background-image: url('./assets/leftclick.png');
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: 0.2em;
+  left: 0.2em;
+}
+#lightning .icon {
+  background-image: url('./assets/lightning.png');
+  background-size: 36em;
+  background-position: 28em 21em;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+}
+
+#slowmo .controlicon {
+  background-image: url('./assets/spacebar.png');
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: 0em;
+  left: 0.4em;
+}
+#slowmo .icon {
+  background-image: url('./assets/clock.png');
+  background-size: 36em;
+  background-position: 28em 13.5em;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+}
+
+#wall .controlicon {
+  background-image: url('./assets/q.png');
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: 0em;
+  left: 0.4em;
+}
+#wall .icon {
+  background-image: url('./assets/earth.png');
+  background-size: 36em;
+  background-position: 13.7em -22.8em;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+}
+
+
+#mutebutton {
+  position: absolute;
+  top: 0.2em;
+  left: 0.2em;
+  font-size: 2em;
+  pointer-events: initial;
+  cursor: pointer;
+}
+
+#dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 10em;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: peachpuff;
+
+  font-family: Inexpugnable, serif;
+
+  z-index: 3;
+  transition: opacity 500ms linear;
+}
+#dialog #portrait {
+  background-image: url('./assets/mentor.png');
+  width: 10em;
+  height: 10em;
+  flex-grow: 0;
+  flex-shrink: 0;
+  background-size: 100%;
+}
+
+#dialog.mage #portrait {
+  background-image: url('./assets/mage.png');
+  background-size: 30em;
+  image-rendering: pixelated;
+  background-position: 0em -2em;
+}
+#dialog #text {
+  padding: 1em;
+  font-size: 1.5em;
+  flex-grow: 3;
+}
+
+#dialog.hide {
+  opacity: 0;
 }

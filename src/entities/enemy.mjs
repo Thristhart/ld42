@@ -6,14 +6,13 @@ import Vector from "victor";
 import Kinematic from "../behaviors/kinematic.mjs";
 import Friction from "../behaviors/friction.mjs";
 import Collidable from "../behaviors/collidable.mjs";
-import TracksPlayer from "../behaviors/trackplayer.mjs";
-import RunsAtPlayer from "../behaviors/runsAtPlayer.mjs";
 import ResolveCollisions from "../behaviors/resolveCollisions.mjs";
+import Hurtable from "../behaviors/hurtable.mjs";
 
 class Enemy extends Entity {
   constructor(x, y) {
     super(x, y);
-    this.behaviors = [Kinematic, Friction, Collidable, ResolveCollisions];
+    this.behaviors = [Kinematic, Friction, Collidable, ResolveCollisions, Hurtable];
     
     this.behaviors.forEach(behavior => {
       behavior.init(this);

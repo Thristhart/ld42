@@ -1,4 +1,5 @@
 import Images from "./images.mjs";
+import EventEmitter from "events";
 
 class Sprite {
   constructor(image, spriteWidth, spriteHeight, sheetWidth, sheetHeight) {
@@ -28,14 +29,21 @@ class Animation {
     this.frames = frames;
     this.timePerFrame = 300;
     this.timeSinceLastFrame = 0;
+    this.events = new EventEmitter();
   }
   clone() {
-    return new Animation(this.sprite, this.frames);
+    let dupe = new Animation(this.sprite, this.frames);
+    for(let key in this) {
+      dupe[key] = this[key];
+    }
+    dupe.events = new EventEmitter();
+    return dupe;
   }
   nextFrame() {
     this.currentFrame++;
     if(this.currentFrame >= this.frames.length) {
       this.currentFrame = 0;
+      this.events.emit("loop");
     }
     this.timeSinceLastFrame = 0;
   }
@@ -96,10 +104,39 @@ Sprite.BIRD.WALK_LEFT.timePerFrame = 200;
 Sprite.BIRD.WALK_RIGHT.timePerFrame = 200;
 Sprite.BIRD.WALK_UP.timePerFrame = 200;
 
+Sprite.CHARGER = new Sprite(Images.CHARGER, 130, 132, 3, 4);
+
+Sprite.CHARGER.IDLE_DOWN = new Animation(Sprite.CHARGER,  [new Frame(1, 0)]);
+Sprite.CHARGER.IDLE_LEFT = new Animation(Sprite.CHARGER,  [new Frame(1, 1)]);
+Sprite.CHARGER.IDLE_RIGHT = new Animation(Sprite.CHARGER, [new Frame(1, 2)]);
+Sprite.CHARGER.IDLE_UP = new Animation(Sprite.CHARGER,    [new Frame(1, 3)]);
+
+Sprite.CHARGER.WALK_DOWN = new Animation(Sprite.CHARGER,
+  [new Frame(0, 0), new Frame(1, 0), new Frame(2, 0)]);
+Sprite.CHARGER.WALK_LEFT = new Animation(Sprite.CHARGER,
+  [new Frame(0, 1), new Frame(1, 1), new Frame(2, 1)]);
+Sprite.CHARGER.WALK_RIGHT = new Animation(Sprite.CHARGER,
+  [new Frame(0, 2), new Frame(1, 2), new Frame(2, 2)]);
+Sprite.CHARGER.WALK_UP = new Animation(Sprite.CHARGER,
+  [new Frame(0, 3), new Frame(1, 3), new Frame(2, 3)]);
+
+Sprite.CHARGER.WALK_DOWN.timePerFrame = 200;
+Sprite.CHARGER.WALK_LEFT.timePerFrame = 200;
+Sprite.CHARGER.WALK_RIGHT.timePerFrame = 200;
+Sprite.CHARGER.WALK_UP.timePerFrame = 200;
+
 Sprite.LIGHTNING = new Sprite(Images.LIGHTNING, 64, 64, 5, 6);
 
 Sprite.LIGHTNING.BALL = new Animation(Sprite.LIGHTNING, 
   [new Frame(3, 2), new Frame(4, 2), new Frame(0, 3), new Frame(1, 3)]);
 Sprite.LIGHTNING.BALL.timePerFrame = 100;
+
+Sprite.EARTH = new Sprite(Images.EARTH, 64, 64, 5, 6);
+
+Sprite.EARTH.WALL_FORM = new Animation(Sprite.EARTH, 
+  [new Frame(2, 2), new Frame(3, 2), new Frame(4, 2), new Frame(0, 3), new Frame(1, 3), new Frame(2, 3)]);
+Sprite.EARTH.WALL_FORM.timePerFrame = 100;
+
+Sprite.EARTH.WALL = new Animation(Sprite.EARTH, [new Frame(2, 3)]);
 
 export default Sprite;

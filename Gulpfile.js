@@ -19,11 +19,14 @@ function buildJS() {
     format: 'iife',
     cache,
     sourcemap: true,
+    globals: {
+      'howler': 'Howl',
+    },
     plugins: [
       rollupNode(),
       rollupBuiltins(),
       rollupCommonjs({
-        include: 'node_modules/victor/**'
+        include: ['node_modules/victor/**']
       }),
     ]
   })
@@ -60,6 +63,7 @@ function serve() {
   browserSync.init({
     server: "./dist",
     open: false,
+    ghostMode: false,
   });
 }
 

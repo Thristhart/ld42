@@ -3,6 +3,7 @@ import Util from "../global/util.mjs";
 class FacingSprites {
   static init(entity) {
     entity.facing = Math.PI / 2;
+    entity.animation = entity.sprite.IDLE_DOWN;
   }
   static update(entity, dt) {
     let moving = !(entity.velocity.x === 0 && entity.velocity.y === 0);

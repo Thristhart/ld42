@@ -18,10 +18,12 @@ class Input {
     Input.events = new EventEmitter();
     Input.canvas = canvas;
     
-    canvas.addEventListener("keydown", Input.onKeydown);
-    canvas.addEventListener("keyup", Input.onKeyup);
-    canvas.addEventListener("mousemove", Input.onMouseMove);
-    canvas.addEventListener("mousedown", Input.onClick);
+    let container = canvas.parentElement;
+    
+    document.body.addEventListener("keydown", Input.onKeydown);
+    document.body.addEventListener("keyup", Input.onKeyup);
+    container.addEventListener("mousemove", Input.onMouseMove);
+    container.addEventListener("mousedown", Input.onClick);
 
     Input.events.on("leftStart", () => {
       Input.keys.left = true;
@@ -38,6 +40,9 @@ class Input {
     Input.events.on("downStart", () => {
       Input.keys.down = true;
       Input.calculateInputVector();
+    });
+    Input.events.on("slowmoStart", () => {
+      Input.keys.slowmo = true;
     });
     
     Input.events.on("leftEnd", () => {
@@ -56,6 +61,9 @@ class Input {
       Input.keys.down = false;
       Input.calculateInputVector();
     });
+    Input.events.on("slowmoEnd", () => {
+      Input.keys.slowmo = false;
+    });
   }
 
   static onKeydown(event) {
@@ -70,6 +78,12 @@ class Input {
     }
     if(event.code === "KeyS" || event.code === "ArrowDown") {
       Input.events.emit("downStart");
+    }
+    if(event.code === "Space") {
+      Input.events.emit("slowmoStart");
+    }
+    if(event.code === "KeyQ") {
+      Input.events.emit("wallStart");
     }
   }
   
@@ -86,6 +100,12 @@ class Input {
     if(event.code === "KeyS" || event.code === "ArrowDown") {
       Input.events.emit("downEnd");
     }
+    if(event.code === "Space") {
+      Input.events.emit("slowmoEnd");
+    }
+    if(event.code === "KeyQ") {
+      Input.events.emit("wallEnd");
+    }
   }
 
   static onMouseMove(event) {
@@ -97,7 +117,9 @@ class Input {
     Input.events.emit("mousemove");
   }
   static onClick(event) {
-    Input.events.emit("click");
+    if(event.target === Input.canvas) {
+      Input.events.emit("click");
+    }
   }
 
   static calculateInputVector() {

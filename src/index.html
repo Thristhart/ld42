@@ -3,9 +3,42 @@
     <title>Ludum Dare 42</title>
   </head>
   <body>
-    <section id="container">
-      <canvas id="display" tabindex=1></canvas>
+    <section id="container" tabindex=1>
+      <div id="ui">
+        <div id="hearts">❤️❤️❤️❤️❤️</div>
+        <div id="spells">
+          <spell id="lightning">
+            <div class="controlicon"></div>
+            <div class="icon"></div>
+            <svg width=32 height=32 viewBox="0, 0, 32, 32">
+              <circle r="16" cx="16" cy="16" />
+            </svg>
+          </spell>
+          <spell id="slowmo">
+            <div class="controlicon"></div>
+            <div class="icon"></div>
+            <svg width=32 height=32 viewBox="0, 0, 32, 32">
+              <circle r="16" cx="16" cy="16" />
+            </svg>
+          </spell>
+          <spell id="wall">
+            <div class="controlicon"></div>
+            <div class="icon"></div>
+            <svg width=32 height=32 viewBox="0, 0, 32, 32">
+              <circle r="16" cx="16" cy="16" />
+            </svg>
+          </spell>
+        </div>
+        <div id="mutebutton">🔊</div>
+        <div id="dialog">
+          <div id="portrait"></div>
+          <div id="text"></div>
+        </div>
+      </div>
+      <canvas id="display"></canvas>
     </section>
+    <script src="./assets/vendor/bulletml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.14/howler.core.min.js"></script>
     <script src="app.js"></script>
     <link rel="stylesheet" href="app.css" type="text/css"></link>
   </body>
