@@ -177,7 +177,11 @@ Sprite.EARTH.WALL = new Animation(Sprite.EARTH, [new Frame(2, 3)]);
 Sprite.DARKNESS = new Sprite(Images.DARKNESS, 192, 192, 5, 5);
 
 Sprite.DARKNESS.SKULL = new Animation(Sprite.DARKNESS, 
+  [new Frame(0, 0)]);
+
+Sprite.DARKNESS.SKULL_OPEN = new Animation(Sprite.DARKNESS, 
   [new Frame(0, 0), new Frame(1, 0), new Frame(2, 0)]);
+Sprite.DARKNESS.SKULL_OPEN.timePerFrame = 50;
 
 Sprite.DARKNESS.POOF = new Animation(Sprite.DARKNESS, 
   [new Frame(3, 0), new Frame(4, 0), 

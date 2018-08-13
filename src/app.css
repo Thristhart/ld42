@@ -77,11 +77,18 @@ spell svg {
 
 #lightning .controlicon {
   background-image: url('./assets/leftclick.png');
+  background-size: 100%;
   width: 32px;
   height: 32px;
   position: absolute;
   top: 0.2em;
   left: 0.2em;
+}
+.ps #lightning .controlicon {
+  background-image: url('./assets/buttons/PS4_R2.png');
+}
+.xbox #lightning .controlicon {
+  background-image: url('./assets/buttons/XboxOne_RT.png');
 }
 #lightning .icon {
   background-image: url('./assets/lightning.png');
@@ -95,11 +102,18 @@ spell svg {
 
 #slowmo .controlicon {
   background-image: url('./assets/spacebar.png');
+  background-size: 100%;
   width: 32px;
   height: 32px;
   position: absolute;
   top: 0em;
   left: 0.4em;
+}
+.ps #slowmo .controlicon {
+  background-image: url('./assets/buttons/PS4_L1.png');
+}
+.xbox #slowmo .controlicon {
+  background-image: url('./assets/buttons/XboxOne_LB.png');
 }
 #slowmo .icon {
   background-image: url('./assets/clock.png');
@@ -113,11 +127,18 @@ spell svg {
 
 #wall .controlicon {
   background-image: url('./assets/q.png');
+  background-size: 100%;
   width: 32px;
   height: 32px;
   position: absolute;
   top: 0em;
   left: 0.4em;
+}
+.ps #wall .controlicon {
+  background-image: url('./assets/buttons/PS4_L2.png');
+}
+.xbox #wall .controlicon {
+  background-image: url('./assets/buttons/XboxOne_LT.png');
 }
 #wall .icon {
   background-image: url('./assets/earth.png');
@@ -190,6 +211,23 @@ spell svg {
   padding: 1em;
   font-size: 1.5em;
   flex-grow: 3;
+}
+#dialog #prompt {
+  background-image: url('./assets/leftclick.png');
+  background-size: 100%;
+  z-index: 2;
+  flex-grow: 2;
+  flex-shrink: 0;
+  flex-basis: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+}
+.ps #dialog #prompt {
+  background-image: url('./assets/buttons/PS4_R2.png');
+}
+.xbox #dialog #prompt {
+  background-image: url('./assets/buttons/XboxOne_RT.png');
 }
 
 #dialog.hide {

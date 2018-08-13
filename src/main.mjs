@@ -732,19 +732,18 @@ function drawMagicCircle(radius) {
   ctx.closePath();
   ctx.stroke();
 
-  if(!state.currentLevel instanceof VictoryLevel) {
+  ctx.rotate(-rotation);
+  ctx.translate(-centerX, -centerY);
+
+  if(!(state.currentLevel instanceof VictoryLevel)) {
     ctx.fillStyle = "rgba(53, 64, 72, 0.8)";
     ctx.filter = "blur(1px)";
     ctx.beginPath();
-    ctx.arc(0, 0, 9 - (1 - Math.sin(state.time / 1000)) * 3, 0, TWOPI);
+    ctx.arc(skull.x, skull.y, 5 - (1 - Math.sin(state.time / 1000)) * 1, 0, TWOPI);
     ctx.closePath();
     ctx.fill();
     ctx.filter = "none";
   }
-
-
-  ctx.rotate(-rotation);
-  ctx.translate(-centerX, -centerY);
 }
 function buildMagicCircle(radius) {
   let centerX = radius;
@@ -828,6 +827,11 @@ function gameloop(timestamp) {
   let dt = timestamp - lastUpdateTime; 
   if(dt > 50) {
     dt = 50;
+  }
+  if(Input.gamepad) {
+    Input.scanGamepads();
+    Input.gamepadMouse();
+    Input.calculateInputVector();
   }
   if(state.slowmoCooldown > 0) {
     state.slowmoCooldown -= dt;
@@ -937,7 +941,9 @@ Input.events.on("click", () => {
     currentLightningBallCooldown = lightningBallCooldown;
 
     Sounds.ZAP.play();
-    let ball = LightningBall.shootAt(Input.mouse.x, Input.mouse.y, state.player.x, state.player.y);
+    let ball = LightningBall.shootAt(Input.mouse.x, Input.mouse.y, skull.x, skull.y - 15 + Math.sin(state.time / 1000) * 5);
+    skull.animation = Sprite.DARKNESS.SKULL_OPEN;
+    skull.animation.events.once("loop", () => skull.animation = Sprite.DARKNESS.SKULL);
 
     entities.push(ball);
   }
@@ -949,6 +955,9 @@ Input.events.on("wallStart", () => {
   }
   if(currentWallCooldown <= 0) {
     currentWallCooldown = wallCooldown;
+
+    skull.animation = Sprite.DARKNESS.SKULL_OPEN;
+    skull.animation.events.once("loop", () => skull.animation = Sprite.DARKNESS.SKULL);
 
     let dy = Input.mouse.y - player.y;
     let dx = Input.mouse.x - player.x;
@@ -988,6 +997,8 @@ Input.events.on("slowmoStart", () => {
     state.slowmoCooldown = 5000;
     state.slowmoSeconds = 2000;
     state.timescale = 0.6;
+    skull.animation = Sprite.DARKNESS.SKULL_OPEN;
+    skull.animation.events.once("loop", () => skull.animation = Sprite.DARKNESS.SKULL);
   }
 });
 import Player from "./entities/player.mjs";
@@ -1034,7 +1045,7 @@ document.addEventListener("visibilitychange", function() {
   }
 });
 
-let skull = new Skull(CONSTANTS.WIDTH / 2, CONSTANTS.HEIGHT / 2);
+let skull = new Skull(CONSTANTS.WIDTH / 2 + 40, CONSTANTS.HEIGHT / 2);
 entities.push(skull);
 
 window.Input = Input;

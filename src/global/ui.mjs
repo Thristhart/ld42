@@ -24,6 +24,8 @@ class Spell {
   }
 }
 
+UI.container = document.getElementById("ui");
+
 UI.hearts = document.getElementById("hearts");
 UI.mutebutton = document.getElementById("mutebutton");
 UI.mutebutton.addEventListener("click", function() {
