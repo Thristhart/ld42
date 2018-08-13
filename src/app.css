@@ -25,6 +25,7 @@ body {
   top: 0;
   left: 0;
   image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
 }
 
 #ui {
@@ -159,13 +160,19 @@ spell svg {
   flex-grow: 0;
   flex-shrink: 0;
   background-size: 100%;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
 }
 
 #dialog.mage #portrait {
   background-image: url('./assets/mage.png');
   background-size: 30em;
-  image-rendering: pixelated;
   background-position: 0em -2em;
+}
+#dialog.sage #portrait {
+  background-image: url('./assets/wizard.png');
+  background-size: 100em;
+  background-position: -32.4em -0.3em;
 }
 #dialog #text {
   padding: 1em;

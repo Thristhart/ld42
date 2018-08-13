@@ -8,11 +8,11 @@ x New spells
   x slowmo
   - ???
 x Bullet pattern mechanism
-- New enemies
-  - Enemy wizard
+x New enemies
+  - Enemy wizard (almost done, just need to make it not snap to new circle pos)
   - ???
 - Lore
   x dialog system?
 - Polish
- - Portal animation
+ x Portal animation
  - Start screen

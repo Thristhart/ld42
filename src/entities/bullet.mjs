@@ -8,6 +8,7 @@ import Renderer from "../global/renderer.mjs";
 import Player from "./player.mjs";
 import entities from "../global/entities.mjs";
 import Wall from "./wall.mjs";
+import state from "../global/state.mjs";
 
 class Bullet extends Entity {
   constructor(x, y) {
@@ -17,6 +18,7 @@ class Bullet extends Entity {
     this.behaviors.forEach(behavior => {
       behavior.init(this);
     });
+    this.collisionData = 10;
   }
   update(dt) {
     this.behaviors.forEach(behavior => {
@@ -39,8 +41,9 @@ class Bullet extends Entity {
     }
   }
   draw(dt) {
+    Renderer.context.fillStyle = state.currentLevel.circleColor;
     Renderer.context.beginPath(this.x, this.y)
-    Renderer.context.arc(this.x, this.y, 3, 0, Math.PI * 2);
+    Renderer.context.arc(this.x, this.y, 8, 0, Math.PI * 2);
     Renderer.context.fill();
   }
 

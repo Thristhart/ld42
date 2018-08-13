@@ -125,6 +125,41 @@ Sprite.CHARGER.WALK_LEFT.timePerFrame = 200;
 Sprite.CHARGER.WALK_RIGHT.timePerFrame = 200;
 Sprite.CHARGER.WALK_UP.timePerFrame = 200;
 
+
+Sprite.COOL = new Sprite(Images.COOL, 120, 128, 12, 8);
+
+Sprite.COOL.IDLE_DOWN = new Animation(Sprite.COOL,  [new Frame(4, 0)]);
+Sprite.COOL.IDLE_LEFT = new Animation(Sprite.COOL,  [new Frame(4, 1)]);
+Sprite.COOL.IDLE_RIGHT = new Animation(Sprite.COOL, [new Frame(4, 2)]);
+Sprite.COOL.IDLE_UP = new Animation(Sprite.COOL,    [new Frame(4, 3)]);
+
+Sprite.COOL.WALK_DOWN = new Animation(Sprite.COOL,
+  [new Frame(3, 0), new Frame(4, 0), new Frame(5, 0)]);
+Sprite.COOL.WALK_LEFT = new Animation(Sprite.COOL,
+  [new Frame(3, 1), new Frame(4, 1), new Frame(5, 1)]);
+Sprite.COOL.WALK_RIGHT = new Animation(Sprite.COOL,
+  [new Frame(3, 2), new Frame(4, 2), new Frame(5, 2)]);
+Sprite.COOL.WALK_UP = new Animation(Sprite.COOL,
+  [new Frame(3, 3), new Frame(4, 3), new Frame(5, 3)]);
+
+Sprite.SAGE = new Sprite(Images.SAGE, 52, 72, 12, 8);
+
+Sprite.SAGE.IDLE_DOWN = new Animation(Sprite.SAGE,  [new Frame(4, 0)]);
+Sprite.SAGE.IDLE_LEFT = new Animation(Sprite.SAGE,  [new Frame(4, 1)]);
+Sprite.SAGE.IDLE_RIGHT = new Animation(Sprite.SAGE, [new Frame(4, 2)]);
+Sprite.SAGE.IDLE_UP = new Animation(Sprite.SAGE,    [new Frame(4, 3)]);
+
+Sprite.SAGE.WALK_DOWN = new Animation(Sprite.SAGE,
+  [new Frame(3, 0), new Frame(4, 0), new Frame(5, 0)]);
+Sprite.SAGE.WALK_LEFT = new Animation(Sprite.SAGE,
+  [new Frame(3, 1), new Frame(4, 1), new Frame(5, 1)]);
+Sprite.SAGE.WALK_RIGHT = new Animation(Sprite.SAGE,
+  [new Frame(3, 2), new Frame(4, 2), new Frame(5, 2)]);
+Sprite.SAGE.WALK_UP = new Animation(Sprite.SAGE,
+  [new Frame(3, 3), new Frame(4, 3), new Frame(5, 3)]);
+Sprite.SAGE.CAST = new Animation(Sprite.SAGE,
+  [new Frame(4, 4), new Frame(4, 5), new Frame(4, 6), new Frame(4, 7)]);
+
 Sprite.LIGHTNING = new Sprite(Images.LIGHTNING, 64, 64, 5, 6);
 
 Sprite.LIGHTNING.BALL = new Animation(Sprite.LIGHTNING, 
@@ -138,5 +173,17 @@ Sprite.EARTH.WALL_FORM = new Animation(Sprite.EARTH,
 Sprite.EARTH.WALL_FORM.timePerFrame = 100;
 
 Sprite.EARTH.WALL = new Animation(Sprite.EARTH, [new Frame(2, 3)]);
+
+Sprite.DARKNESS = new Sprite(Images.DARKNESS, 192, 192, 5, 5);
+
+Sprite.DARKNESS.SKULL = new Animation(Sprite.DARKNESS, 
+  [new Frame(0, 0), new Frame(1, 0), new Frame(2, 0)]);
+
+Sprite.DARKNESS.POOF = new Animation(Sprite.DARKNESS, 
+  [new Frame(3, 0), new Frame(4, 0), 
+  new Frame(0, 1), new Frame(1, 1), new Frame(2, 1), new Frame(3, 1), new Frame(4, 1),
+  new Frame(0, 2), new Frame(1, 2), new Frame(2, 2)]);
+
+Sprite.DARKNESS.POOF.timePerFrame = 30;
 
 export default Sprite;

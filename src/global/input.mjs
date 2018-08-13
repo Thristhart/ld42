@@ -85,6 +85,7 @@ class Input {
     if(event.code === "KeyQ") {
       Input.events.emit("wallStart");
     }
+    event.preventDefault();
   }
   
   static onKeyup(event) {
@@ -106,6 +107,7 @@ class Input {
     if(event.code === "KeyQ") {
       Input.events.emit("wallEnd");
     }
+    event.preventDefault();
   }
 
   static onMouseMove(event) {
@@ -120,6 +122,7 @@ class Input {
     if(event.target === Input.canvas) {
       Input.events.emit("click");
     }
+    event.preventDefault();
   }
 
   static calculateInputVector() {

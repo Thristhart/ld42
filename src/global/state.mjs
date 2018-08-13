@@ -6,5 +6,6 @@ const state = {
   slowmoSeconds: 2000,
   slowmoCooldown: 0,
   events,
+  sageID: 0,
 };
 export default state;

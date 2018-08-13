@@ -15,6 +15,12 @@ class Entity {
   get y() {
     return this.position.y;
   }
+  set x(x) {
+    this.position.x = x;
+  }
+  set y(y) {
+    this.position.y = y;
+  }
   update(dt) {
     this.behaviors.forEach(behavior => {
       behavior.update(this, dt);

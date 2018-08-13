@@ -35,7 +35,7 @@ class Player extends Entity {
 
     this.collisionData = 10;
     this.collisionOffset.y = 18;
-    this.hp = 5;
+    this.hp = 15;
   }
   hurt() {
     if(this.invincibleDuration > 0) {

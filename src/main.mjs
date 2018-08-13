@@ -56,15 +56,15 @@ class MeadowLevel extends Level {
     this.duration = 60500;
     this.timeSinceLastBird = 0;
     this.timeSinceLastCharger = 0;
-    this.timePerBird = 2500;
-    this.timePerCharger = 7500;
+    this.timePerBird = 4500;
+    this.timePerCharger = 9500;
   }
   setup() {
     this.started = false;
     this.loaded = false;
     this.levelStartDuration = 2000;
     UI.dialog.className = "mentor";
-    UI.dialog.text.innerHTML = `My dearest Ellomir, the poison has finally run its course. Soon I will cross the Path of Tirofu and dream the Great Dream. You must continue on in my place. I have taught you everything you need to know. The Sages of Kitr will pursue you, but you cannot let them have our precious cargo. Now quickly, take the orb, use its powers, and flee!`;
+    UI.dialog.text.innerHTML = `My dearest Ellomir, the poison has finally run its course. Soon I will cross the Path of Tirofu and dream the Great Dream. You must continue on in my place. I have taught you everything you need to know. The Sages of Kitr will pursue you, but you cannot let them have our precious cargo. Now quickly, take the skull, use its powers, and flee! Here come their familiars now!`;
     UI.showDialog();
     
     buildCircleCache();
@@ -87,7 +87,7 @@ class MeadowLevel extends Level {
     }
     if(this.timeSinceLastCharger > this.timePerCharger) {
       this.timeSinceLastCharger = 0;
-      let spawnX = Math.random() * 800 + 100;
+      let spawnX = player.x + -100 + Math.random() * 200;
       let bird = new Charger(spawnX, 0);
       entities.push(bird);
     }
@@ -102,11 +102,386 @@ class DungeonLevel extends Level {
     }).volume(0.8);
     this.duration = 72000;
     this.circleColor = "#3089e0";
+    this.timeline = new Timeline();
+    this.timeline.addPoint(2880, () => {
+      let pattern = {
+        spawn: Bullet,
+        repeat: 10,
+        wait: 30,
+        behavior: {
+          init: (entity, iterations) => {
+            let angle = Math.PI / 10 + iterations * Math.PI / 20;
+            entity.velocity.x = Math.cos(angle) * 0.2;
+            entity.velocity.y = Math.sin(angle) * 0.2;
+          },
+          update: (entity, dt) => {
+
+          },
+        },
+      };
+      let emitter = new PatternEmitter(78, 140, pattern);
+      entities.push(emitter);
+    });
+    this.timeline.addPoint(6200, () => {
+      let pattern = {
+        spawn: Bullet,
+        repeat: 10,
+        wait: 30,
+        behavior: {
+          init: (entity, iterations) => {
+            let angle = Math.PI / 2 + Math.PI/ 10 + iterations * Math.PI / 20;
+            entity.velocity.x = Math.cos(angle) * 0.2;
+            entity.velocity.y = Math.sin(angle) * 0.2;
+          },
+          update: (entity, dt) => {
+
+          },
+        },
+      };
+      let emitter = new PatternEmitter(920, 140, pattern);
+      entities.push(emitter);
+    });
+    let left_blast = {
+      spawn: Bullet,
+      repeat: 10,
+      behavior: {
+        init: (entity, iterations) => {
+          let arc_width = Math.PI / 2;
+          let angle = Math.PI - Math.PI / 4 + iterations * arc_width/10;
+          entity.velocity.x = Math.cos(angle) * 0.2;
+          entity.velocity.y = Math.sin(angle) * 0.2;
+        },
+        update: (entity, dt) => {
+
+        },
+      },
+    };
+    this.timeline.addPoint(8500, () => {
+      let emitter = new PatternEmitter(920, 427, left_blast);
+      entities.push(emitter);
+    });
+    this.timeline.thenWait(200, () => {
+      let emitter = new PatternEmitter(920, 427, left_blast);
+      entities.push(emitter);
+    });
+    this.timeline.thenWait(200, () => {
+      let emitter = new PatternEmitter(920, 427, left_blast);
+      entities.push(emitter);
+    });
+    this.timeline.thenWait(200, () => {
+      let emitter = new PatternEmitter(920, 427, left_blast);
+      entities.push(emitter);
+    });
+    let right_blast = {
+      spawn: Bullet,
+      repeat: 10,
+      behavior: {
+        init: (entity, iterations) => {
+          let arc_width = Math.PI / 2;
+          let angle = -Math.PI / 4 + iterations * arc_width/10;
+          entity.velocity.x = Math.cos(angle) * 0.2;
+          entity.velocity.y = Math.sin(angle) * 0.2;
+        },
+        update: (entity, dt) => {
+
+        },
+      },
+    };
+    this.timeline.addPoint(14100, () => {
+      let emitter = new PatternEmitter(78, 427, right_blast);
+      entities.push(emitter);
+    });
+    this.timeline.thenWait(200, () => {
+      let emitter = new PatternEmitter(78, 427, right_blast);
+      entities.push(emitter);
+    });
+    this.timeline.thenWait(200, () => {
+      let emitter = new PatternEmitter(78, 427, right_blast);
+      entities.push(emitter);
+    });
+    this.timeline.thenWait(200, () => {
+      let emitter = new PatternEmitter(78, 427, right_blast);
+      entities.push(emitter);
+    });
+    this.timeline.addPoint(19940, () => {
+      entities.push(new PatternEmitter(921, 427, {
+        spawn: Bullet,
+        wait: 150,
+        repeat: 4,
+        behavior: {
+          init: (entity, iterations) => {
+            let dx = state.player.x - entity.x;
+            let dy = state.player.y - entity.y;
+            let angle = Math.atan2(dy, dx);
+            entity.velocity.x = Math.cos(angle) * 0.2;
+            entity.velocity.y = Math.sin(angle) * 0.2;
+          },
+          update: (entity, dt) => {
+  
+          },
+        },
+      }));
+      
+      entities.push(new PatternEmitter(78, 427, {
+        spawn: Bullet,
+        wait: 150,
+        repeat: 4,
+        behavior: {
+          init: (entity, iterations) => {
+            let dx = state.player.x - entity.x;
+            let dy = state.player.y - entity.y;
+            let angle = Math.atan2(dy, dx);
+            entity.velocity.x = Math.cos(angle) * 0.2;
+            entity.velocity.y = Math.sin(angle) * 0.2;
+          },
+          update: (entity, dt) => {
+  
+          },
+        },
+      }));
+    });
+    this.timeline.addPoint(21750, () => {
+      entities.push(new PatternEmitter(921, 140, {
+        spawn: Bullet,
+        wait: 300,
+        repeat: 2,
+        behavior: {
+          init: (entity, iterations) => {
+            let dx = state.player.x - entity.x;
+            let dy = state.player.y - entity.y;
+            let angle = Math.atan2(dy, dx);
+            entity.velocity.x = Math.cos(angle) * 0.2;
+            entity.velocity.y = Math.sin(angle) * 0.2;
+          },
+          update: (entity, dt) => {
+  
+          },
+        },
+      }));
+      
+      entities.push(new PatternEmitter(78, 140, {
+        spawn: Bullet,
+        wait: 300,
+        repeat: 2,
+        behavior: {
+          init: (entity, iterations) => {
+            let dx = state.player.x - entity.x;
+            let dy = state.player.y - entity.y;
+            let angle = Math.atan2(dy, dx);
+            entity.velocity.x = Math.cos(angle) * 0.2;
+            entity.velocity.y = Math.sin(angle) * 0.2;
+          },
+          update: (entity, dt) => {
+  
+          },
+        },
+      }));
+    });
+    this.timeline.addPoint(22610, () => {
+      entities.push(new PatternEmitter(940, 940, {
+        spawn: Bullet,
+        wait: 60,
+        repeat: 20,
+        behavior: {
+          init: (entity, iterations) => {
+            let angle = (Math.PI * 5/4) + Math.sin(iterations / 20) * Math.PI / 4;
+            entity.velocity.x = Math.cos(angle) * 0.2;
+            entity.velocity.y = Math.sin(angle) * 0.2;
+          },
+          update: (entity, dt) => {
+  
+          },
+        },
+      }));
+      this.timeline.addPoint(25440, () => {
+        entities.push(new PatternEmitter(70, 940, {
+          spawn: Bullet,
+          wait: 60,
+          repeat: 40,
+          behavior: {
+            init: (entity, iterations) => {
+              let angle = (-Math.PI / 6) - Math.sin(iterations / 20) * Math.PI / 4;
+              entity.velocity.x = Math.cos(angle) * 0.2;
+              entity.velocity.y = Math.sin(angle) * 0.2;
+            },
+            update: (entity, dt) => {
+    
+            },
+          },
+        }));
+      });
+      this.timeline.addPoint(28260, () => {
+        entities.push(new PatternEmitter(940, 940, {
+          spawn: Bullet,
+          wait: 60,
+          repeat: 20,
+          behavior: {
+            init: (entity, iterations) => {
+              let angle = (Math.PI * 5/4) - Math.sin(iterations / 4) * Math.PI / 8;
+              entity.velocity.x = Math.cos(angle) * 0.2;
+              entity.velocity.y = Math.sin(angle) * 0.2;
+            },
+            update: (entity, dt) => {
+    
+            },
+          },
+        }));
+      });
+      this.timeline.addPoint(31080, () => {
+        entities.push(new PatternEmitter(940, 940, {
+          spawn: Bullet,
+          wait: 30,
+          repeat: 45,
+          behavior: {
+            init: (entity, iterations) => {
+              let angle = (Math.PI * 5/4) + Math.sin(iterations / 20) * Math.PI / 4;
+              entity.velocity.x = Math.cos(angle) * 0.2;
+              entity.velocity.y = Math.sin(angle) * 0.2;
+            },
+            update: (entity, dt) => {
+    
+            },
+          },
+        }));
+      });
+      this.timeline.addPoint(33880, () => {
+        entities.push(new PatternEmitter(70, 940, {
+          spawn: Bullet,
+          wait: 30,
+          repeat: 80,
+          behavior: {
+            init: (entity, iterations) => {
+              let angle = (-Math.PI / 6) - Math.sin(iterations / 20) * Math.PI / 4;
+              entity.velocity.x = Math.cos(angle) * 0.2;
+              entity.velocity.y = Math.sin(angle) * 0.2;
+            },
+            update: (entity, dt) => {
+    
+            },
+          },
+        }));
+      });
+
+      this.timeline.addPoint(39540, () => {
+        function waveUpdate(entity, dt) {
+          entity.timeAlive += dt;
+          if(Math.floor(entity.timeAlive / 1500) % 2 === 0) {
+            entity.velocity.x = 0;
+            entity.velocity.y = 0;
+          }
+          else {
+            entity.velocity.x = Math.cos(entity.angle) * 0.1;
+            entity.velocity.y = Math.sin(entity.angle) * 0.1;
+          }
+        }
+        entities.push(new PatternEmitter(920, 140, {
+          spawn: Bullet,
+          repeat: 30,
+          behavior: {
+            init: (entity, iterations) => {
+              let angle = (Math.PI / 2) + iterations / 30 * Math.PI / 2;
+              entity.angle = angle;
+              entity.velocity.x = Math.cos(angle) * 0.1;
+              entity.velocity.y = Math.sin(angle) * 0.1;
+              entity.timeAlive = 0;
+            },
+            update: waveUpdate,
+          },
+        }));
+        entities.push(new PatternEmitter(70, 140, {
+          spawn: Bullet,
+          repeat: 30,
+          behavior: {
+            init: (entity, iterations) => {
+              let angle = (Math.PI / 2) - iterations / 30 * Math.PI / 2;
+              entity.angle = angle;
+              entity.velocity.x = Math.cos(angle) * 0.1;
+              entity.velocity.y = Math.sin(angle) * 0.1;
+              entity.timeAlive = 0;
+            },
+            update: waveUpdate,
+          },
+        }));
+      });
+    });
+    
+    this.timeline.addPoint(56520, () => {
+      let pattern = {
+        spawn: Bullet,
+        repeat: 10,
+        wait: 30,
+        behavior: {
+          init: (entity, iterations) => {
+            let angle = Math.PI / 10 + iterations * Math.PI / 20;
+            entity.velocity.x = Math.cos(angle) * 0.2;
+            entity.velocity.y = Math.sin(angle) * 0.2;
+          },
+          update: (entity, dt) => {
+
+          },
+        },
+      };
+      let emitter = new PatternEmitter(78, 140, pattern);
+      entities.push(emitter);
+    });
+    this.timeline.addPoint(59680, () => {
+      let pattern = {
+        spawn: Bullet,
+        repeat: 10,
+        wait: 30,
+        behavior: {
+          init: (entity, iterations) => {
+            let angle = Math.PI / 2 + Math.PI/ 10 + iterations * Math.PI / 20;
+            entity.velocity.x = Math.cos(angle) * 0.2;
+            entity.velocity.y = Math.sin(angle) * 0.2;
+          },
+          update: (entity, dt) => {
+
+          },
+        },
+      };
+      let emitter = new PatternEmitter(920, 140, pattern);
+      entities.push(emitter);
+    });
+    this.timeline.addPoint(62150, () => {
+      let emitter = new PatternEmitter(920, 427, left_blast);
+      entities.push(emitter);
+    });
+    this.timeline.thenWait(200, () => {
+      let emitter = new PatternEmitter(920, 427, left_blast);
+      entities.push(emitter);
+    });
+    this.timeline.thenWait(200, () => {
+      let emitter = new PatternEmitter(920, 427, left_blast);
+      entities.push(emitter);
+    });
+    this.timeline.thenWait(200, () => {
+      let emitter = new PatternEmitter(920, 427, left_blast);
+      entities.push(emitter);
+    });
+
+    this.timeline.addPoint(67770, () => {
+      let emitter = new PatternEmitter(78, 427, right_blast);
+      entities.push(emitter);
+    });
+    this.timeline.thenWait(200, () => {
+      let emitter = new PatternEmitter(78, 427, right_blast);
+      entities.push(emitter);
+    });
+    this.timeline.thenWait(200, () => {
+      let emitter = new PatternEmitter(78, 427, right_blast);
+      entities.push(emitter);
+    });
+    this.timeline.thenWait(200, () => {
+      let emitter = new PatternEmitter(78, 427, right_blast);
+      entities.push(emitter);
+    });
   }
   setup() {
     this.started = false;
     this.loaded = false;
     this.levelStartDuration = 2000;
+    this.levelProgression = 0;
     UI.dialog.className = "mage";
     UI.dialog.text.innerHTML = `OH GODS I'M GONNA PUKE!`;
     UI.showDialog();
@@ -115,7 +490,7 @@ class DungeonLevel extends Level {
 
     setTimeout(() => {
       Input.events.once("click", () => {
-        UI.dialog.text.innerHTML = `Nope, we're good li'l orb friend. Totally, definitely, perfectly-Uhhh, where the hell am I? You really do let us move between worlds like my former master said. I thought my ex-master was pulling my leg with all this orb talk. I guess you could call him my POST-master, eh? Oh boy, am I talking to an orb right now? Is that what's happen-what was that sound?!`;
+        UI.dialog.text.innerHTML = `Nope, we're good li'l skull friend. Totally, definitely, perfectly-Uhhh, where the hell am I? You really do let us move between worlds like my former master said. I thought my ex-master was pulling my leg with all this skull talk. I guess you could call him my POST-master, eh? Oh boy, am I talking to a skull right now? Is that what's happen-what was that sound?!`;
         Input.events.once("click", () => {
           UI.hideDialog();
           this.load();
@@ -126,33 +501,120 @@ class DungeonLevel extends Level {
   }
   update(dt) {
     super.update(dt);
+    this.levelProgression += dt;
+    this.timeline.update(this.levelProgression);
   }
 }
 class AstralLevel extends Level {
   constructor() {
     super();
-    this.background = Images.DUNGEON;
+    this.background = Images.ASTRAL;
     this.music = new Howl({
       src: "./assets/we_crushin.mp3"
     });
-    this.duration = 72000;
-    this.circleColor = "#3089e0";
+    this.duration = 56000;
+    this.circleColor = "#bc203f";
+    this.timeline = new Timeline();
+
+    this.timeline.addPoint(2250, () => {
+      entities.push(new PatternEmitter(124, 96, {
+        spawn: Bullet,
+        wait: 277,
+        repeat: 300,
+        behavior: {
+          init: (entity, iterations) => {
+            let dx = state.player.x - entity.x;
+            let dy = state.player.y - entity.y;
+            let angle = Math.atan2(dy, dx);
+            entity.velocity.x = Math.cos(angle) * 0.2;
+            entity.velocity.y = Math.sin(angle) * 0.2;
+          },
+          update: (entity, dt) => {
+  
+          },
+        },
+      }));
+    });
+    this.timeline.addPoint(3500, () => {
+      let sage = new Sage(200, 50);
+      entities.push(sage);
+      sage = new Sage(200, 50);
+      entities.push(sage);
+      sage = new Sage(200, 50);
+      entities.push(sage);
+      sage = new Sage(200, 50);
+      entities.push(sage);
+    });
   }
   setup() {
     this.started = false;
     this.loaded = false;
     this.levelStartDuration = 2000;
-    UI.dialog.className = "mage";
-    UI.dialog.text.innerHTML = `it's space?`;
+    this.levelProgression = 0;
+    UI.dialog.className = "sage";
+    UI.dialog.text.innerHTML = `There is no escape! Give us the Skull or perish! The Sages of Kitr have the power to chase you beyond Time and Space. What hope is there for a mere wizard's apprentice? There is only pain and suffering in your future, we have seen it in the scrying pools. Give us the Skull and avoid this cruel fate.`;
     UI.showDialog();
     
     buildCircleCache();
 
     setTimeout(() => {
       Input.events.once("click", () => {
-        UI.hideDialog();
-        this.load();
-        this.begin();
+        UI.dialog.className = "mage";
+        UI.dialog.text.innerHTML = "The Skull is my one and only friend now, and friends don't just give each other up to weird wizards! Stuff it!";
+        
+        Input.events.once("click", () => {
+          UI.dialog.className = "sage";
+          UI.dialog.text.innerHTML = "AHAHAHA, you fool! If you had given us the orb we would have just killed you. Now you must suffer!";
+          Input.events.once("click", () => {
+            UI.hideDialog();
+            this.load();
+            this.begin();
+          });
+        });
+      });
+    }, 1000);
+  }
+  update(dt) {
+    super.update(dt);
+    this.levelProgression += dt;
+    this.timeline.update(this.levelProgression);
+  }
+}
+class VictoryLevel extends Level {
+  constructor() {
+    super();
+    this.background = Images.MEADOW;
+    this.music = new Howl({
+      src: "./assets/Main_Theme.mp3"
+    });
+    this.duration = 56000;
+    this.circleColor = "#bc203f";
+  }
+  setup() {
+    this.started = false;
+    this.loaded = false;
+    this.levelStartDuration = 2000;
+    UI.dialog.className = "skull";
+    UI.dialog.text.innerHTML = `Yo dude! You totally passed the test!`;
+    UI.showDialog();
+    
+    buildCircleCache();
+
+    setTimeout(() => {
+      Input.events.once("click", () => {
+        UI.dialog.className = "skull";
+        UI.dialog.text.innerHTML = `Well it wasn't exactly a test. More like an eternal struggle for like good and evil or whatever, but good job anyways! Those whack sages are stuck in that floaty dimension now. Thanks for like freeing me and stuff, my dude. I'm gonna like go now. Got some partying to do, so like take it easy. Here's a dope ass turtle as a reward!`;
+        
+        Input.events.once("click", () => {
+          UI.dialog.className = "turtle";
+          UI.dialog.text.innerHTML = `IT'S A RAD TURTLE!!!`;
+          
+          Input.events.once("click", () => {
+            UI.hideDialog();
+            this.load();
+            this.begin();
+          });
+        });
       });
     }, 1000);
   }
@@ -161,9 +623,9 @@ class AstralLevel extends Level {
   }
 }
 
-state.currentLevel = new MeadowLevel();
+state.currentLevel = new AstralLevel();
 
-state.nextLevels = [new DungeonLevel(), new AstralLevel()];
+state.nextLevels = [new DungeonLevel(), new AstralLevel(), new VictoryLevel()];
 
 function draw() {
   Renderer.beginDraw();
@@ -219,7 +681,16 @@ function drawMagicCircle(radius) {
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.arc(0, 0, CONSTANTS.CENTER_RADIUS, 0, TWOPI);
+  ctx.closePath();
   ctx.stroke();
+
+  ctx.fillStyle = "rgba(53, 64, 72, 0.8)";
+  ctx.filter = "blur(1px)";
+  ctx.beginPath();
+  ctx.arc(0, 0, 9 - (1 - Math.sin(state.time / 1000)) * 3, 0, TWOPI);
+  ctx.closePath();
+  ctx.fill();
+  ctx.filter = "none";
 
   ctx.rotate(-rotation);
   ctx.translate(-centerX, -centerY);
@@ -301,6 +772,8 @@ function gameloop(timestamp) {
     lastUpdateTime = timestamp;
   }
 
+  state.time = timestamp;
+
   let dt = timestamp - lastUpdateTime; 
   if(dt > 50) {
     dt = 50;
@@ -317,7 +790,7 @@ function gameloop(timestamp) {
         deathMusic.fade(0, 1, 1000);
         switchLevelTo(state.currentLevel);
         UI.dialog.className = "sage";
-        UI.dialog.text.innerHTML = `The puny apprentice is dead! Now we can use the orb to dominate all of Time and Space! AHAHAHAHAHAHAHAHAHAHAHA!`;
+        UI.dialog.text.innerHTML = `The puny apprentice is dead! Now we can use the skull to dominate all of Time and Space! AHAHAHAHAHAHAHAHAHAHAHA!`;
         Input.events.once("click", () => {
           deathMusic.stop();
         });
@@ -330,7 +803,7 @@ function gameloop(timestamp) {
     }
   }
   dt *= state.timescale;
-  if(state.currentLevel.loaded) {
+  if(state.currentLevel.loaded && !state.levelEnding) {
     entities.forEach(ent => {
       ent.update(dt);
     });
@@ -338,7 +811,10 @@ function gameloop(timestamp) {
       state.currentLevel.music.rate(state.timescale);
     }
   }
-  if(state.currentLevel.started) {
+  if(state.levelEnding) {
+    skull.update(dt);
+  }
+  if(state.currentLevel.started && !state.levelEnding) {
     timeSinceLevelStart += dt;
     state.circleSize = CONSTANTS.CENTER_RADIUS + (1 - timeSinceLevelStart / state.currentLevel.duration) * (CONSTANTS.CIRCLE_MAX - CONSTANTS.CENTER_RADIUS);
 
@@ -353,11 +829,14 @@ function gameloop(timestamp) {
     }
   }
 
-  if(timeSinceLevelStart >= state.currentLevel.duration) {
-    // spawn portal
-    let nextLevel = state.nextLevels.shift();
-    switchLevelTo(nextLevel);
-    state.circleSize = CONSTANTS.CIRCLE_MAX;
+  if(timeSinceLevelStart >= state.currentLevel.duration && !state.levelEnding) {
+    state.levelEnding = true;
+    skull.animation = Sprite.DARKNESS.POOF.clone();
+    skull.animation.events.once("loop", () => {
+      let nextLevel = state.nextLevels.shift();
+      switchLevelTo(nextLevel);
+      state.circleSize = CONSTANTS.CIRCLE_MAX;
+    });
   }
 
   draw();
@@ -374,10 +853,13 @@ function gameloop(timestamp) {
 function switchLevelTo(level) {
   entities.splice(0);
   entities.push(state.player);
+  entities.push(skull);
+  skull.animation = Sprite.DARKNESS.SKULL.clone();
   state.currentLevel.music.stop();
   state.currentLevel = level;
   level.setup();
   timeSinceLevelStart = 0;
+  state.levelEnding = false;
 }
 
 Input.events.on("click", () => {
@@ -452,6 +934,10 @@ import PatternEmitter from "./entities/pattern_emitter.mjs";
 import Sounds from "./global/sounds.mjs";
 import Bullet from "./entities/bullet.mjs";
 import Charger from "./entities/charger.mjs";
+import Skull from "./entities/skull.mjs";
+import Sprite from "./global/sprites.mjs";
+import Timeline from "./global/timeline.mjs";
+import Sage from "./entities/sage.mjs";
 
 state.player = new Player(canvas.width / 2, canvas.height / 2);
 entities.push(state.player);
@@ -480,6 +966,10 @@ document.addEventListener("visibilitychange", function() {
   }
 });
 
+let skull = new Skull(CONSTANTS.WIDTH / 2, CONSTANTS.HEIGHT / 2);
+entities.push(skull);
+
+window.Input = Input;
 window.entities = entities;
 
 window.player = state.player;

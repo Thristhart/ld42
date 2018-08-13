@@ -35,7 +35,7 @@ class PatternEmitter extends Entity {
       }
       let ent = new this.pointer.spawn(x, y);
       if(this.pointer.behavior) {
-        this.pointer.behavior.init(ent);
+        this.pointer.behavior.init(ent, this.iterations);
         ent.behaviors.push(this.pointer.behavior);
       }
       entities.push(ent);
