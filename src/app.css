@@ -233,3 +233,9 @@ spell svg {
 #dialog.hide {
   opacity: 0;
 }
+
+@media (max-width: 900px) {
+  #ui {
+    font-size: 1.7vw;
+  }
+}
